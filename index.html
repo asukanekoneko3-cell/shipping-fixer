@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>出荷データ修正ツール</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/encoding-japanese/2.1.0/encoding.min.js"></script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap');
 
@@ -493,7 +494,7 @@ function renderTable(rows, diffs, isCloudlogi) {
 
 // ===== CSV書き出し =====
 function toCSVString(rows) {
-  return '\uFEFF' + rows.map(row =>
+  return rows.map(row =>
     row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(',')
   ).join('\r\n');
 }
@@ -572,8 +573,12 @@ function clearAll() {
 
 function downloadResult() {
   if (!resultCSV) return;
+  // UTF-8文字列 → Shift-JIS(Windows-31J)バイト列に変換
+  const unicodeArr = Encoding.stringToCode(resultCSV);
+  const sjisArr = Encoding.convert(unicodeArr, { to: 'SJIS', from: 'UNICODE' });
+  const uint8 = new Uint8Array(sjisArr);
   const a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob([resultCSV], { type: 'text/csv;charset=utf-8;' }));
+  a.href = URL.createObjectURL(new Blob([uint8], { type: 'text/csv;charset=shift_jis;' }));
   a.download = document.getElementById('dlBtn').dataset.filename || '修正済み.csv';
   a.click();
 }
