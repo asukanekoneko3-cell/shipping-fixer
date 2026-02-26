@@ -49,8 +49,9 @@
   .step-label {
     font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
     text-transform: uppercase; color: var(--text-dim); margin-bottom: 10px;
+    max-width: 680px; margin-left: auto; margin-right: auto;
   }
-  .system-select { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; max-width: 680px; }
+  .system-select { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; max-width: 680px; margin-left: auto; margin-right: auto; }
 
   .sys-btn {
     background: var(--surface); border: 2px solid var(--border2); border-radius: 10px;
@@ -76,6 +77,7 @@
   .process-panel {
     background: var(--surface); border: 1.5px solid var(--border); border-radius: 8px;
     padding: 14px 18px; margin-bottom: 16px; display: none; max-width: 680px;
+    margin-left: auto; margin-right: auto;
   }
   .process-panel.visible { display: block; }
   .process-panel.logless  { border-color: var(--logless-border);  background: var(--logless-bg); }
@@ -89,6 +91,7 @@
     background: var(--surface); border: 2px dashed var(--border2); border-radius: 8px;
     padding: 26px; text-align: center; cursor: pointer; transition: all 0.15s;
     margin-bottom: 12px; position: relative; max-width: 680px;
+    margin-left: auto; margin-right: auto;
   }
   .upload-area.disabled { opacity: 0.45; pointer-events: none; }
   .upload-area.logless-hover  { border-color: var(--logless);  background: var(--logless-bg); }
@@ -102,6 +105,7 @@
   .error-box {
     background: #fef2f2; border: 1.5px solid #fca5a5; border-radius: 8px;
     padding: 12px 16px; color: #dc2626; font-size: 12px; margin-bottom: 12px; display: none; max-width: 680px;
+    margin-left: auto; margin-right: auto;
   }
   .error-box.visible { display: block; }
 
@@ -123,7 +127,7 @@
   }
 
   /* DL & Clear ボタン */
-  .btn-row { display: flex; gap: 10px; margin-bottom: 16px; align-items: center; flex-wrap: wrap; }
+  .btn-row { display: flex; gap: 10px; margin-bottom: 16px; align-items: center; flex-wrap: wrap; max-width: 680px; margin-left: auto; margin-right: auto; }
   .dl-btn {
     padding: 10px 24px; border-radius: 7px; border: none;
     font-family: 'Noto Sans JP', sans-serif; font-size: 13px; font-weight: 700;
