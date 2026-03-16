@@ -407,30 +407,32 @@ function processCloudlogi(rows) {
   r = r.map(row => { const nr = [...row]; nr.splice(39, 1); return nr; });
   changes.push({ label: 'invoice_bundle_flg 列を削除（40列目）', count: r.length - 1 });
 
-  // ③ 絶対値（列削除後 → 元57列目 = idx55）
+  // ③ 絶対値（列削除後 → 元BG列 = idx57）
+  // AN削除後: 元idx58(BG=member_rank_discount_price) → idx57
   let absCount = 0;
   r = r.map((row, ri) => {
     if (ri === 0) return row;
     const nr = [...row];
-    const v = parseFloat(nr[55]);
-    if (!isNaN(v) && v < 0) { nr[55] = Math.abs(v).toString(); absCount++; }
+    const v = parseFloat(nr[57]);
+    if (!isNaN(v) && v < 0) { nr[57] = Math.abs(v).toString(); absCount++; }
     return nr;
   });
   changes.push({ label: 'マイナス値を絶対値に変換（member_rank_discount_price）', count: absCount });
 
-  // ④ 合計（列削除後 idx51〜56）→ 末尾に追加
-  r[0] = [...r[0], '割引合計'];
+  // ④ BH列(order_point_use)のヘッダーを「割引合計」に変更し、BB〜BH(idx52〜58)の合計で上書き
+  // AN削除後: BB=idx52, BC=idx53, BD=idx54, BE=idx55, BF=idx56, BG=idx57, BH=idx58
+  r[0][58] = '割引合計';
   let sumCount = 0;
   r = r.map((row, ri) => {
     if (ri === 0) return row;
     const nr = [...row];
     let sum = 0;
-    for (let j = 51; j <= 56; j++) { const v = parseFloat(nr[j]); if (!isNaN(v)) sum += v; }
-    nr.push(sum.toString());
+    for (let j = 52; j <= 58; j++) { const v = parseFloat(nr[j]); if (!isNaN(v)) sum += v; }
+    nr[58] = sum.toString();
     sumCount++;
     return nr;
   });
-  changes.push({ label: '割引合計を計算して新規列に追加', count: sumCount });
+  changes.push({ label: 'BB〜BH(coupon〜order_point_use)の合計をBH列「割引合計」に上書き', count: sumCount });
 
   return { rows: r, changes };
 }
